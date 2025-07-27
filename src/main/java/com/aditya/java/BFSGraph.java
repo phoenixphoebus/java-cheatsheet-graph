@@ -36,7 +36,7 @@ public class BFSGraph {
                  //add node to bfs
                  toReturn.add(currentNode.data);
                  //add children that have not been visited to queue
-                currentNode.connectedNodes.stream().filter(item-> !visited.contains(item)).forEach(queue::offer);
+                currentNode.connectedNodes.stream().filter(item-> !visited.contains(item.data)).forEach(queue::offer);
                  visited.add(currentNode.data);
              }
          }while(!queue.isEmpty());
