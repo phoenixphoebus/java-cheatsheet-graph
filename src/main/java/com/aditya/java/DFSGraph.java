@@ -33,10 +33,10 @@ public class DFSGraph {
             Node<T> currentNode = stack.pop();
             //skip processing if node is visited
             if (!visited.contains(currentNode.data)) {
-                //add node to bfs
+                //add node to dfs
                 toReturn.add(currentNode.data);
                 //add children that have not been visited to queue
-                currentNode.connectedNodes.stream().filter(item -> !visited.contains(item)).forEach(stack::push);
+                currentNode.connectedNodes.stream().filter(item -> !visited.contains(item.data)).forEach(stack::push);
                 visited.add(currentNode.data);
             }
         } while (!stack.isEmpty());
