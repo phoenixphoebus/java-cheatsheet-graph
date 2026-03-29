@@ -14,6 +14,7 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 
 public class BFSGraphTest {
 
+    // Verifies BFS order on a 4-node cycle; uses anyOf to account for nondeterministic Set iteration
     @Test
     void iterativeBFSShouldReturnCorrectBFSOrder(){
         // A - B
@@ -40,12 +41,14 @@ public class BFSGraphTest {
                 ));
     }
 
+    // Verifies BFS on a single isolated node returns a one-element list
     @Test
     void iterativeBFSShouldReturnSingleElementForSingleNodeGraph() {
         List<String> result = BFSGraph.iterativeBFS(GraphUtil.convertMapToGraph(Map.of("A", Set.of())));
         assertThat(result, is(List.of("A")));
     }
 
+    // Verifies BFS traverses a 3-node linear chain visiting each node exactly once
     @Test
     void iterativeBFSShouldTraverseLinearChain() {
         // A - B - C
@@ -63,6 +66,7 @@ public class BFSGraphTest {
         ));
     }
 
+    // Verifies BFS visits all nodes of a tree graph regardless of start node or iteration order
     @Test
     void iterativeBFSShouldTraverseTreeGraph() {
         //     R
@@ -81,6 +85,7 @@ public class BFSGraphTest {
         assertThat(result, containsInAnyOrder("R", "A", "B", "C", "D"));
     }
 
+    // Verifies BFS works with Integer-typed nodes, exercising the generic Node<T> parameter
     @Test
     void iterativeBFSShouldWorkWithIntegerNodes() {
         Map<Integer, Set<Integer>> map = Map.ofEntries(

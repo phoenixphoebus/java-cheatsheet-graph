@@ -13,6 +13,7 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 
 public class DFSGraphTest {
 
+    // Verifies DFS order on a 4-node cycle; uses anyOf to account for nondeterministic Set iteration
     @Test
     void iterativeDFSShouldReturnCorrectDFSOrder(){
         // A - B
@@ -39,12 +40,14 @@ public class DFSGraphTest {
         ));
     }
 
+    // Verifies DFS on a single isolated node returns a one-element list
     @Test
     void iterativeDFSShouldReturnSingleElementForSingleNodeGraph() {
         List<String> result = DFSGraph.iterativeDFS(GraphUtil.convertMapToGraph(Map.of("A", Set.of())));
         assertThat(result, is(List.of("A")));
     }
 
+    // Verifies DFS traverses a 3-node linear chain visiting each node exactly once
     @Test
     void iterativeDFSShouldTraverseLinearChain() {
         // A - B - C
@@ -62,6 +65,7 @@ public class DFSGraphTest {
         ));
     }
 
+    // Verifies DFS visits all nodes of a tree graph regardless of start node or iteration order
     @Test
     void iterativeDFSShouldTraverseTreeGraph() {
         //     R
@@ -80,6 +84,7 @@ public class DFSGraphTest {
         assertThat(result, containsInAnyOrder("R", "A", "B", "C", "D"));
     }
 
+    // Verifies DFS works with Integer-typed nodes, exercising the generic Node<T> parameter
     @Test
     void iterativeDFSShouldWorkWithIntegerNodes() {
         Map<Integer, Set<Integer>> map = Map.ofEntries(
