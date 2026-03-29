@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class GraphUtilTest {
 
+    // Verifies a manually-built 4-node cycle graph is correctly serialized to an adjacency map
     @Test
     void convertGraphToMapShouldCreateMapCorrectly() {
 
@@ -28,6 +29,7 @@ public class GraphUtilTest {
         assertEquals(expectedMap, mapOfGraph);
     }
 
+    // Verifies that converting a map to a graph and back produces the same adjacency map
     @Test
     void convertMapToGraphShouldCreateGraphCorrectly() {
 
@@ -67,6 +69,7 @@ public class GraphUtilTest {
         return nodeA;
     }
 
+    // Verifies that connected node objects are correctly mapped to a set of their data values
     @Test
     void convertConnectedNodesToSetOfDataShouldReturnSetOfDataInConnectedNodes(){
         Node<String> nodeA = new Node<>("A");
@@ -77,6 +80,7 @@ public class GraphUtilTest {
         assertEquals(Set.of("B","C"), GraphUtil.convertConnectedNodesToSetOfData(nodeA));
     }
 
+    // Verifies that an empty map input returns null
     @Test
     void convertMapToGraphShouldReturnNullForEmptyMap() {
         Map<String, Set<String>> emptyMap = new HashMap<>();
@@ -84,6 +88,7 @@ public class GraphUtilTest {
         assertNull(result);
     }
 
+    // Verifies the single-node special case: a map with one isolated entry is handled without throwing
     @Test
     void convertMapToGraphShouldHandleSingleIsolatedNode() {
         Node<String> result = GraphUtil.convertMapToGraph(Map.of("A", Set.of()));
@@ -92,6 +97,7 @@ public class GraphUtilTest {
         assertTrue(result.connectedNodes.isEmpty());
     }
 
+    // Verifies that a disconnected node in a multi-node graph throws IllegalArgumentException
     @Test
     void convertMapToGraphShouldThrowForDisconnectedNode() {
         Map<String, Set<String>> map = Map.ofEntries(
@@ -102,6 +108,7 @@ public class GraphUtilTest {
         assertThrows(IllegalArgumentException.class, () -> GraphUtil.convertMapToGraph(map));
     }
 
+    // Verifies that a neighbour referenced in values but absent as a key is created with no connections
     @Test
     void convertMapToGraphShouldHandleNodeReferencedButMissingAsKey() {
         Map<String, Set<String>> map = Map.of("A", Set.of("B"));
@@ -114,6 +121,7 @@ public class GraphUtilTest {
         assertTrue(bNode.connectedNodes.isEmpty());
     }
 
+    // Verifies that a lone node with no connections converts to a map entry with an empty set
     @Test
     void convertGraphToMapShouldHandleSingleNode() {
         Node<String> node = new Node<>("A");
@@ -121,12 +129,14 @@ public class GraphUtilTest {
         assertEquals(Map.of("A", Set.of()), result);
     }
 
+    // Verifies that a node with no neighbours returns an empty set
     @Test
     void convertConnectedNodesToSetOfDataShouldReturnEmptySetForIsolatedNode() {
         Node<String> node = new Node<>("A");
         assertEquals(Set.of(), GraphUtil.convertConnectedNodesToSetOfData(node));
     }
 
+    // Verifies the round-trip map->graph->map works for Integer-typed nodes, exercising generics
     @Test
     void convertMapToGraphShouldWorkWithIntegerNodes() {
         Map<Integer, Set<Integer>> map = Map.ofEntries(
